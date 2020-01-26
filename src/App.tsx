@@ -1,13 +1,17 @@
 import React from "react";
-import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { ThemeProvider, CSSReset, ColorModeProvider } from "@chakra-ui/core";
 
 import { Layout } from "./Layout";
 
-const App = () => (
-  <ThemeProvider>
-    <CSSReset />
-    <Layout />
-  </ThemeProvider>
-);
+const App = () => {
+  return (
+    <ThemeProvider>
+      <ColorModeProvider>
+        <CSSReset />
+        <Layout />
+      </ColorModeProvider>
+    </ThemeProvider>
+  );
+};
 
 export default App;
