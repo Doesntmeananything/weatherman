@@ -2,6 +2,7 @@ import React from "react";
 import { Button, useColorMode, Box } from "@chakra-ui/core";
 
 import { WeatherCard } from "./WeatherCard";
+import { WeatherController } from "./WeatherController";
 
 export const Layout = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -14,7 +15,9 @@ export const Layout = () => {
         </Button>
       </header>
       <Box as="main" d="flex" alignItems="center" justifyContent="center">
-        <WeatherCard />
+        <WeatherController>
+          <WeatherCard />
+        </WeatherController>
       </Box>
     </>
   );
