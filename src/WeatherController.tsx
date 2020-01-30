@@ -20,10 +20,11 @@ export const WeatherController = (props: PropsWithChildren<{}>) => {
 
   return (
     <Stack spacing={4}>
-      <Box shadow="sm" minW="sm" maxW="md" borderWidth="1px" rounded="lg" p={4}>
+      <Box shadow="sm" minW="md" borderWidth="1px" rounded="lg" p={4}>
         <Stack isInline spacing={4}>
           <Input size="lg" placeholder="e.g. New York" />
           <Button
+            variantColor="teal"
             size="lg"
             rightIcon={isOpen ? "chevron-up" : "chevron-down"}
             onClick={handleToggle}

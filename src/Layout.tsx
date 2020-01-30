@@ -10,7 +10,7 @@ export const Layout = () => {
   return (
     <>
       <header>
-        <Button onClick={toggleColorMode}>
+        <Button variantColor="purple" onClick={toggleColorMode}>
           Toggle {colorMode === "light" ? "Dark" : "Light"}
         </Button>
       </header>
