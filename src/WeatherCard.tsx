@@ -10,6 +10,7 @@ import {
 import { IoIosSunny } from "react-icons/io";
 
 import weatherData from "./mockWeatherAPI.json";
+import { ForecastPanel } from "./ForecastPanel";
 import { OptionsContext } from "./weatherOptionsContext";
 
 export const WeatherCard = () => {
@@ -38,6 +39,7 @@ export const WeatherCard = () => {
           </Stat>
         </Box>
       </Flex>
+      <ForecastPanel />
     </Box>
   );
 };
