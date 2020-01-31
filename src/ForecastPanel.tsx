@@ -11,7 +11,9 @@ export const ForecastPanel = () => {
     <Tabs variant="enclosed">
       <TabList>
         {forecastDays.map(({ date_epoch }) => (
-          <Tab>{format(fromUnixTime(date_epoch), "EEE d")}</Tab>
+          <Tab key={date_epoch}>
+            {format(fromUnixTime(date_epoch), "EEE d")}
+          </Tab>
         ))}
       </TabList>
 
