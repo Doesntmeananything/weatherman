@@ -9,7 +9,7 @@ export const WeatherCard = () => {
   const { name } = weatherData.location;
   const { forecastday } = weatherData.forecast;
 
-  const { scale } = useContext(OptionsContext);
+  const { tempScale } = useContext(OptionsContext);
 
   const {
     temp_c,
@@ -19,8 +19,8 @@ export const WeatherCard = () => {
     condition
   } = weatherData.current;
 
-  const temp = scale === "C" ? temp_c : temp_f;
-  const feelsLike = scale === "C" ? feelslike_c : feelslike_f;
+  const temp = tempScale === "C" ? temp_c : temp_f;
+  const feelsLike = tempScale === "C" ? feelslike_c : feelslike_f;
 
   return (
     <Box shadow="md" borderWidth="1px" rounded="lg" p={4}>
@@ -30,11 +30,11 @@ export const WeatherCard = () => {
           <Stack isInline justify="center" align="center">
             <Image src={condition.icon} alt={condition.text} />
             <Text fontSize="4xl">
-              {temp} °{scale}
+              {temp} °{tempScale}
             </Text>
           </Stack>
           <Text fontSize="sm">
-            Feels like {feelsLike} °{scale}
+            Feels like {feelsLike} °{tempScale}
           </Text>
         </Stack>
       </Box>
