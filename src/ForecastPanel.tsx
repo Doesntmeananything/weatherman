@@ -41,12 +41,23 @@ type DayData = {
   };
 };
 
-const getTemps = (dayData: DayData, scale: Options["scale"]) => {
+const getTemps = (dayData: DayData, scale: Options["tempScale"]) => {
   return {
     max: scale === "C" ? dayData.maxtemp_c : dayData.maxtemp_f,
     min: scale === "C" ? dayData.mintemp_c : dayData.mintemp_f,
     avg: scale === "C" ? dayData.avgtemp_c : dayData.avgtemp_f
   };
+};
+
+const getWindSpeed = (dayData: DayData, scale: Options["speedScale"]) => {
+  return scale === "kph" ? dayData.maxwind_kph : dayData.maxwind_mph;
+};
+
+const getPrecipitationLength = (
+  dayData: DayData,
+  scale: Options["lengthScale"]
+) => {
+  return scale === "mm" ? dayData.totalprecip_mm : dayData.totalprecip_in;
 };
 
 type DayFeatureProps = {
@@ -78,13 +89,15 @@ type ForecastPanelProps = {
 };
 
 export const ForecastPanel = ({ forecastDays }: ForecastPanelProps) => {
-  const { scale } = useContext(OptionsContext);
+  const { tempScale, lengthScale, speedScale } = useContext(OptionsContext);
 
   const tabs: JSX.Element[] = [];
   const panels: JSX.Element[] = [];
 
   forecastDays.forEach(({ date_epoch, day, date, astro }) => {
-    const { max, min, avg } = getTemps(day, scale);
+    const { max, min, avg } = getTemps(day, tempScale);
+    const windSpeed = getWindSpeed(day, speedScale);
+    const precipitationLength = getPrecipitationLength(day, lengthScale);
 
     tabs.push(
       <Tab key={date_epoch}>
@@ -96,7 +109,7 @@ export const ForecastPanel = ({ forecastDays }: ForecastPanelProps) => {
             size="46px"
           />
           <Text>
-            {avg} °{scale}
+            {avg} °{tempScale}
           </Text>
         </Stack>
       </Tab>
@@ -111,7 +124,7 @@ export const ForecastPanel = ({ forecastDays }: ForecastPanelProps) => {
             <DayFeature
               icon={WiThermometer}
               title="Max temp"
-              stat={`${max} °${scale}`}
+              stat={`${max} °${tempScale}`}
             ></DayFeature>
             <DayFeature
               icon={WiSunrise}
@@ -121,12 +134,12 @@ export const ForecastPanel = ({ forecastDays }: ForecastPanelProps) => {
             <DayFeature
               icon={WiStrongWind}
               title="Max wind"
-              stat={day.maxwind_kph}
+              stat={`${windSpeed} ${speedScale}`}
             ></DayFeature>
             <DayFeature
               icon={WiThermometerExterior}
               title="Min temp"
-              stat={`${min} °${scale}`}
+              stat={`${min} °${tempScale}`}
             ></DayFeature>
             <DayFeature
               icon={WiSunset}
@@ -136,7 +149,7 @@ export const ForecastPanel = ({ forecastDays }: ForecastPanelProps) => {
             <DayFeature
               icon={WiUmbrella}
               title="Precipitation"
-              stat={day.totalprecip_mm}
+              stat={`${precipitationLength} ${lengthScale}`}
             ></DayFeature>
           </SimpleGrid>
         </Box>
