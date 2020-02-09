@@ -1,13 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Box,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  Flex
-} from "@chakra-ui/core";
-import { IoIosSunny } from "react-icons/io";
+import { Box, Image, Stack, Text } from "@chakra-ui/core";
 
 import weatherData from "./mockWeatherAPI.json";
 import { ForecastPanel } from "./ForecastPanel";
@@ -18,27 +10,33 @@ export const WeatherCard = () => {
 
   const { scale } = useContext(OptionsContext);
 
-  const { temp_c, feelslike_c, temp_f, feelslike_f } = weatherData.current;
+  const {
+    temp_c,
+    feelslike_c,
+    temp_f,
+    feelslike_f,
+    condition
+  } = weatherData.current;
 
   const temp = scale === "C" ? temp_c : temp_f;
   const feelsLike = scale === "C" ? feelslike_c : feelslike_f;
 
   return (
     <Box shadow="md" borderWidth="1px" rounded="lg" p={4}>
-      <Flex align="center">
-        <Box as={IoIosSunny} size="40%" flexGrow={1} p={2} />
-        <Box flexGrow={2}>
-          <Stat>
-            <StatLabel>{name}</StatLabel>
-            <StatNumber>
+      <Box d="flex" alignItems="center" flexDirection="column" m={4}>
+        <Stack spacing={3} align="center">
+          <Text fontSize="xl">{name}</Text>
+          <Stack isInline justify="center" align="center">
+            <Image src={condition.icon} alt={condition.text} />
+            <Text fontSize="4xl">
               {temp} °{scale}
-            </StatNumber>
-            <StatHelpText>
-              Feels like {feelsLike} °{scale}
-            </StatHelpText>
-          </Stat>
-        </Box>
-      </Flex>
+            </Text>
+          </Stack>
+          <Text fontSize="sm">
+            Feels like {feelsLike} °{scale}
+          </Text>
+        </Stack>
+      </Box>
       <ForecastPanel />
     </Box>
   );
