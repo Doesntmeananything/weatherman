@@ -7,6 +7,7 @@ import { OptionsContext } from "./weatherOptionsContext";
 
 export const WeatherCard = () => {
   const { name } = weatherData.location;
+  const { forecastday } = weatherData.forecast;
 
   const { scale } = useContext(OptionsContext);
 
@@ -37,7 +38,7 @@ export const WeatherCard = () => {
           </Text>
         </Stack>
       </Box>
-      <ForecastPanel />
+      <ForecastPanel forecastDays={forecastday} />
     </Box>
   );
 };

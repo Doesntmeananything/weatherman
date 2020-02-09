@@ -13,11 +13,16 @@ import {
   SimpleGrid
 } from "@chakra-ui/core";
 import { fromUnixTime, format } from "date-fns";
+import {
+  WiThermometerExterior,
+  WiThermometer,
+  WiSunrise,
+  WiSunset,
+  WiStrongWind,
+  WiUmbrella
+} from "react-icons/wi";
 
-import weatherData from "./mockWeatherAPI.json";
 import { OptionsContext, Options } from "./weatherOptionsContext";
-
-const forecastDays = weatherData.forecast.forecastday;
 
 type DayData = {
   mintemp_c: number;
@@ -26,6 +31,14 @@ type DayData = {
   mintemp_f: number;
   maxtemp_f: number;
   avgtemp_f: number;
+  maxwind_mph: number;
+  maxwind_kph: number;
+  totalprecip_mm: number;
+  totalprecip_in: number;
+  condition: {
+    text: string;
+    icon: string;
+  };
 };
 
 const getTemps = (dayData: DayData, scale: Options["scale"]) => {
@@ -39,16 +52,32 @@ const getTemps = (dayData: DayData, scale: Options["scale"]) => {
 type DayFeatureProps = {
   title: string;
   stat: number | string;
+  icon: React.ElementType;
 };
 
-const DayFeature = ({ title, stat }: DayFeatureProps) => (
+const DayFeature = ({ title, stat, icon }: DayFeatureProps) => (
   <Stack spacing={2}>
     <Text fontSize="sm">{title}</Text>
-    <Text fontSize="lg">{stat}</Text>
+    <Stack isInline>
+      <Box as={icon} size="32px"></Box>
+      <Text fontSize="lg">{stat}</Text>
+    </Stack>
   </Stack>
 );
 
-export const ForecastPanel = () => {
+type ForecastPanelProps = {
+  forecastDays: {
+    date_epoch: number;
+    day: DayData;
+    date: string;
+    astro: {
+      sunrise: string;
+      sunset: string;
+    };
+  }[];
+};
+
+export const ForecastPanel = ({ forecastDays }: ForecastPanelProps) => {
   const { scale } = useContext(OptionsContext);
 
   const tabs: JSX.Element[] = [];
@@ -59,7 +88,7 @@ export const ForecastPanel = () => {
 
     tabs.push(
       <Tab key={date_epoch}>
-        <Stack>
+        <Stack w={16}>
           <Text>{format(fromUnixTime(date_epoch), "EEE d")}</Text>
           <Image
             src={day.condition.icon}
@@ -79,12 +108,33 @@ export const ForecastPanel = () => {
           <Text fontSize="xl">Day details</Text>
           <Divider />
           <SimpleGrid columns={3} spacing={2}>
-            <DayFeature title="Max temp" stat={`${max} °${scale}`}></DayFeature>
-            <DayFeature title="Sunrise" stat={astro.sunrise}></DayFeature>
-            <DayFeature title="Max wind" stat={day.maxwind_kph}></DayFeature>
-            <DayFeature title="Min temp" stat={`${min} °${scale}`}></DayFeature>
-            <DayFeature title="Sunset" stat={astro.sunset}></DayFeature>
             <DayFeature
+              icon={WiThermometer}
+              title="Max temp"
+              stat={`${max} °${scale}`}
+            ></DayFeature>
+            <DayFeature
+              icon={WiSunrise}
+              title="Sunrise"
+              stat={astro.sunrise}
+            ></DayFeature>
+            <DayFeature
+              icon={WiStrongWind}
+              title="Max wind"
+              stat={day.maxwind_kph}
+            ></DayFeature>
+            <DayFeature
+              icon={WiThermometerExterior}
+              title="Min temp"
+              stat={`${min} °${scale}`}
+            ></DayFeature>
+            <DayFeature
+              icon={WiSunset}
+              title="Sunset"
+              stat={astro.sunset}
+            ></DayFeature>
+            <DayFeature
+              icon={WiUmbrella}
               title="Precipitation"
               stat={day.totalprecip_mm}
             ></DayFeature>
