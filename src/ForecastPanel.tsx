@@ -101,7 +101,7 @@ export const ForecastPanel = ({ forecastDays }: ForecastPanelProps) => {
 
     tabs.push(
       <Tab key={date_epoch}>
-        <Stack w={16}>
+        <Stack w={16} align="center">
           <Text>{format(fromUnixTime(date_epoch), "EEE d")}</Text>
           <Image
             src={day.condition.icon}
