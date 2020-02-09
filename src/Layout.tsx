@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, useColorMode, Box } from "@chakra-ui/core";
+import { useColorMode, Box, IconButton } from "@chakra-ui/core";
 
 import { WeatherCard } from "./WeatherCard";
 import { WeatherController } from "./WeatherController";
@@ -9,12 +9,32 @@ export const Layout = () => {
 
   return (
     <>
-      <header>
-        <Button variantColor="purple" onClick={toggleColorMode}>
+      <Box
+        as="header"
+        borderBottomWidth="1px"
+        d="flex"
+        justifyContent="flex-end"
+      >
+        <IconButton
+          aria-label={`Switch to ${
+            colorMode === "light" ? "dark" : "light"
+          } mode`}
+          variant="ghost"
+          m={2}
+          fontSize="20px"
+          onClick={toggleColorMode}
+          icon={colorMode === "light" ? "moon" : "sun"}
+        >
           Toggle {colorMode === "light" ? "Dark" : "Light"}
-        </Button>
-      </header>
-      <Box as="main" d="flex" alignItems="center" justifyContent="center">
+        </IconButton>
+      </Box>
+      <Box
+        as="main"
+        d="flex"
+        alignItems="center"
+        justifyContent="center"
+        mt={8}
+      >
         <WeatherController>
           <WeatherCard />
         </WeatherController>
