@@ -1,6 +1,8 @@
 import React from "react";
 
-const options = {
+export type Options = { scale: "C" | "F" };
+
+const options: Options = {
   scale: "C"
 };
 
