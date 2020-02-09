@@ -9,14 +9,14 @@ import {
   Radio
 } from "@chakra-ui/core";
 
-import { OptionsContext } from "./weatherOptionsContext";
+import { OptionsContext, Options } from "./weatherOptionsContext";
 
 export const WeatherController = (props: PropsWithChildren<{}>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => setIsOpen(!isOpen);
 
-  const [scale, setScale] = useState("C");
+  const [scale, setScale] = useState<Options["scale"]>("C");
 
   return (
     <Stack spacing={4}>
@@ -33,7 +33,10 @@ export const WeatherController = (props: PropsWithChildren<{}>) => {
           </Button>
         </Stack>
         <Collapse mt={4} isOpen={isOpen}>
-          <RadioGroup onChange={e => setScale(e.target.value)} value={scale}>
+          <RadioGroup
+            onChange={e => setScale(e.target.value as Options["scale"])}
+            value={scale}
+          >
             <Radio value="C">C</Radio>
             <Radio value="F">F</Radio>
           </RadioGroup>
