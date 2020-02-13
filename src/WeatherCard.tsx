@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
-import { Box, Image, Stack, Text } from "@chakra-ui/core";
+import { Box, Image, Stack, Text, RadioButtonGroup } from "@chakra-ui/core";
+import { WiCelsius, WiFahrenheit } from "react-icons/wi";
 
 import weatherData from "./mockWeatherAPI.json";
+import { RadioIconButton } from "./components/RadioIconButton";
 import { ForecastPanel } from "./ForecastPanel";
 import { OptionsContext } from "./weatherOptionsContext";
 
@@ -29,9 +31,16 @@ export const WeatherCard = () => {
           <Text fontSize="xl">{name}</Text>
           <Stack isInline justify="center" align="center">
             <Image src={condition.icon} alt={condition.text} />
-            <Text fontSize="4xl">
-              {temp} °{tempScale}
-            </Text>
+            <Text fontSize="4xl">{temp}</Text>
+            <RadioButtonGroup
+              d="flex"
+              flexDirection="column"
+              defaultValue="celsius"
+              spacing={1}
+            >
+              <RadioIconButton value="celsius" icon={WiCelsius} />
+              <RadioIconButton value="fahrenheit" icon={WiFahrenheit} />
+            </RadioButtonGroup>
           </Stack>
           <Text fontSize="sm">
             Feels like {feelsLike} °{tempScale}
