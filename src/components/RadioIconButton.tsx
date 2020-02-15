@@ -14,7 +14,7 @@ export const RadioIconButton = React.forwardRef(
     return (
       <IconButton
         ref={ref}
-        variantColor={isChecked ? "teal" : "gray"}
+        color={isChecked ? "teal.200" : "gray.500"}
         variant="ghost"
         icon={icon}
         aria-checked={isChecked}
