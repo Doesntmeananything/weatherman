@@ -1,8 +1,7 @@
 import React from "react";
 import { useColorMode, Box, IconButton } from "@chakra-ui/core";
 
-import { WeatherCard } from "./WeatherCard";
-import { WeatherController } from "./WeatherController";
+import { WeatherLocationSearcher } from "./WeatherWidget/WeatherLocationSearcher";
 
 export const Layout = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -35,9 +34,7 @@ export const Layout = () => {
         justifyContent="center"
         mt={8}
       >
-        <WeatherController>
-          <WeatherCard />
-        </WeatherController>
+        <WeatherLocationSearcher />
       </Box>
     </>
   );
