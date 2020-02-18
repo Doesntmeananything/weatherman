@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Stack, CircularProgress, Flex } from "@chakra-ui/core";
+import { Stack } from "@chakra-ui/core";
 import { useMachine } from "@xstate/react";
 
 import mockWeatherData from "./mockWeatherAPI.json";
 import { weatherFetcherMachine } from "./weatherFetcherMachine";
-import { SearchInputForm } from "../shared/SearchInputForm";
 import { WeatherDataContext } from "./WeatherDataContext";
+import { SearchInputForm } from "../shared/SearchInputForm";
 import { WeatherCard } from "./WeatherCard";
 
 const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
@@ -37,7 +37,10 @@ export const WeatherLocationSearcher = () => {
 
   const { data } = state.context;
 
-  const weatherData = data || initialData;
+  const weatherData =
+    process.env.NODE_ENV === "production"
+      ? data || initialData
+      : data || mockWeatherData;
 
   const handleSubmit = (city: string) => (
     e: React.FormEvent<HTMLFormElement>
@@ -57,13 +60,7 @@ export const WeatherLocationSearcher = () => {
         {state.matches("failure") && "Try again"}
       </SearchInputForm>
       <WeatherDataContext.Provider value={weatherData}>
-        {weatherData ? (
-          <WeatherCard />
-        ) : (
-          <Flex justify="center" align="center">
-            <CircularProgress isIndeterminate />
-          </Flex>
-        )}
+        {weatherData && <WeatherCard />}
       </WeatherDataContext.Provider>
     </Stack>
   );
