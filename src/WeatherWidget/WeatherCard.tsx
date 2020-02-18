@@ -1,31 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box, Image, Stack, Text, RadioButtonGroup } from "@chakra-ui/core";
 import { WiCelsius, WiFahrenheit } from "react-icons/wi";
 
 import { RadioIconButton } from "../shared/RadioIconButton";
 import { ForecastPanel } from "./ForecastPanel";
-import { WeatherDataProps } from "./WeatherData";
+import { WeatherDataContext } from "./WeatherDataContext";
 import { OptionsContext, Options } from "./weatherOptionsContext";
 
-export const WeatherCard = ({ weatherData }: WeatherDataProps) => {
+export const WeatherCard = () => {
   const [scale, setScale] = useState<Options["scale"]>("metric");
+  const { location, forecast, current } = useContext(WeatherDataContext);
 
-  const handleChange = (value: any) => setScale(value);
-
-  const { name } = weatherData.location;
-  const { forecastday } = weatherData.forecast;
-
-  const {
-    temp_c,
-    feelslike_c,
-    temp_f,
-    feelslike_f,
-    condition
-  } = weatherData.current;
+  const { name } = location;
+  const { forecastday } = forecast;
+  const { temp_c, feelslike_c, temp_f, feelslike_f, condition } = current;
 
   const temp = scale === "metric" ? temp_c : temp_f;
   const feelsLike = scale === "metric" ? feelslike_c : feelslike_f;
   const tempScale = scale === "metric" ? "C" : "F";
+
+  const handleChange = (value: any) => setScale(value);
 
   return (
     <Box shadow="md" borderWidth="1px" rounded="lg" p={4}>
