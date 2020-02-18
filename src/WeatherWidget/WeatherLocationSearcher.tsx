@@ -1,21 +1,70 @@
-import React from "react";
-import { Input, Box, Button, Stack } from "@chakra-ui/core";
+import React, { useState, useEffect } from "react";
+import { Stack, CircularProgress, Flex } from "@chakra-ui/core";
+import { useMachine } from "@xstate/react";
 
-import weatherData from "./mockWeatherAPI.json";
+import mockWeatherData from "./mockWeatherAPI.json";
+import { weatherFetcherMachine } from "./weatherFetcherMachine";
+import { SearchInputForm } from "../shared/SearchInputForm";
+import { WeatherDataContext } from "./WeatherDataContext";
 import { WeatherCard } from "./WeatherCard";
 
+const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+
 export const WeatherLocationSearcher = () => {
+  const [initialData, setInitialData] = useState<any>(null);
+
+  const [state, send] = useMachine(weatherFetcherMachine, {
+    services: {
+      fetchWeatherData: (_, e) =>
+        fetch(
+          `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${e.query}&days=7`
+        ).then(res => res.json())
+    }
+  });
+
+  const fetchInitialData = (lat: number, long: number) =>
+    fetch(
+      `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${lat},${long}&days=7`
+    ).then(res => res.json());
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const { latitude, longitude } = pos.coords;
+      const data = await fetchInitialData(latitude, longitude);
+      setInitialData(data);
+    });
+  }, []);
+
+  const { data } = state.context;
+
+  const weatherData = data || initialData;
+
+  const handleSubmit = (city: string) => (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    send("FETCH", { query: city });
+    e.preventDefault();
+  };
+
   return (
-    <Stack spacing={4}>
-      <Box shadow="sm" minW="md" borderWidth="1px" rounded="lg" p={4}>
-        <Stack isInline spacing={4}>
-          <Input size="lg" placeholder="e.g. New York" />
-          <Button variantColor="teal" size="lg">
-            Search
-          </Button>
-        </Stack>
-      </Box>
-      <WeatherCard weatherData={weatherData} />
+    <Stack spacing={4} shouldWrapChildren={true}>
+      <SearchInputForm
+        isLoading={state.matches("loading")}
+        handleSubmit={handleSubmit}
+      >
+        {state.matches("idle") && "Search"}
+        {state.matches("success") && "Search"}
+        {state.matches("failure") && "Try again"}
+      </SearchInputForm>
+      <WeatherDataContext.Provider value={weatherData}>
+        {weatherData ? (
+          <WeatherCard />
+        ) : (
+          <Flex justify="center" align="center">
+            <CircularProgress isIndeterminate />
+          </Flex>
+        )}
+      </WeatherDataContext.Provider>
     </Stack>
   );
 };
