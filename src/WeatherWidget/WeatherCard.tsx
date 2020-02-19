@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Box, Image, Stack, Text, RadioButtonGroup } from "@chakra-ui/core";
 import { WiCelsius, WiFahrenheit } from "react-icons/wi";
+import { fromUnixTime, format } from "date-fns";
 
 import { RadioIconButton } from "../shared/RadioIconButton";
 import { ForecastPanel } from "./ForecastPanel";
@@ -13,7 +14,14 @@ export const WeatherCard = () => {
 
   const { name } = location;
   const { forecastday } = forecast;
-  const { temp_c, feelslike_c, temp_f, feelslike_f, condition } = current;
+  const {
+    temp_c,
+    feelslike_c,
+    temp_f,
+    feelslike_f,
+    condition,
+    last_updated_epoch
+  } = current;
 
   const temp = scale === "metric" ? temp_c : temp_f;
   const feelsLike = scale === "metric" ? feelslike_c : feelslike_f;
@@ -26,6 +34,11 @@ export const WeatherCard = () => {
       <Box d="flex" alignItems="center" flexDirection="column" m={4}>
         <Stack spacing={3} align="center">
           <Text fontSize="xl">{name}</Text>
+          <Text fontSize="sm">
+            Last updated -{" "}
+            {format(fromUnixTime(last_updated_epoch), "h:mm aaa")}
+          </Text>
+
           <Stack isInline justify="center" align="center">
             <Image src={condition.icon} alt={condition.text} />
             <Text fontSize="4xl">{temp}</Text>
