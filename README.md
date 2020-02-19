@@ -2,7 +2,7 @@
 
 ![Weatherman screenshot](https://i.imgur.com/QZZzNNC.png)
 
-## No-nonsense weather app: [DEMO](https://link)
+## No-nonsense weather app: [DEMO](https://distracted-beaver-ddf51f.netlify.com/)
 
 ### Built with
 
