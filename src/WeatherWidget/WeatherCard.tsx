@@ -35,8 +35,7 @@ export const WeatherCard = () => {
         <Stack spacing={3} align="center">
           <Text fontSize="xl">{name}</Text>
           <Text fontSize="sm">
-            Last updated -{" "}
-            {format(fromUnixTime(last_updated_epoch), "h:mm aaa")}
+            Last updated {format(fromUnixTime(last_updated_epoch), "h:mm aaa")}
           </Text>
 
           <Stack isInline justify="center" align="center">
